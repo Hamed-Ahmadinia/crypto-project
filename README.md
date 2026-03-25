@@ -2,60 +2,90 @@
 
 ## Overview
 
-This project develops an end-to-end pipeline for **cryptocurrency time-series analysis and forecasting** using high-frequency market data. The workflow integrates **data acquisition via API, preprocessing, feature engineering, and deep learning modeling**, with a focus on scalable and reproducible experimentation.
+This project develops an end-to-end pipeline for **cryptocurrency time-series analysis and forecasting** using high-frequency market data. The workflow integrates **data acquisition, preprocessing, feature engineering, and deep learning modeling**, focusing on reproducibility and scalability.
 
-The primary objective is to model and predict short-term price dynamics using advanced sequence models such as **Long Short-Term Memory (LSTM)** networks.
+---
+
+## System Architecture
+
+```mermaid
+flowchart LR
+    A[Binance API] --> B[Raw Data Collection]
+    B --> C[Data Preprocessing]
+    C --> D[Feature Engineering]
+    D --> E[LSTM Model Training]
+    E --> F[Predictions]
+    F --> G[Evaluation & Results]
+```
+
+---
+
+## Data Pipeline
+
+```mermaid
+flowchart TD
+    A[API Request] --> B[Download OHLCV Data]
+    B --> C[Store as Parquet Files]
+    C --> D[Load into DataFrame]
+    D --> E[Clean & Sort Data]
+    E --> F[Ready for Feature Engineering]
+```
+
+---
+
+## Feature Engineering Process
+
+```mermaid
+flowchart LR
+    A[Close Price] --> B[Returns]
+    A --> C[Log Returns]
+    A --> D[Rolling Mean]
+    A --> E[Rolling Std]
+    B --> F[Feature Set]
+    C --> F
+    D --> F
+    E --> F
+```
+
+---
+
+## Model Workflow (LSTM)
+
+```mermaid
+flowchart TD
+    A[Time Series Data] --> B[Sliding Window Creation]
+    B --> C[Input Sequences]
+    C --> D[LSTM Network]
+    D --> E[Predicted Price]
+```
 
 ---
 
 ## Data Collection
 
-Market data is collected programmatically from the **Binance API**, covering multiple major cryptocurrency pairs (e.g., BTCUSDT, ETHUSDT, ADAUSDT).
+* Source: Binance API
+* Assets: BTC, ETH, ADA, etc.
+* Time Range: 2021 – Present
+* Frequency: configurable (1m, 15m, etc.)
 
-* Time range: January 2021 – Present
-* Frequency: configurable (e.g., 1-minute, 15-minute intervals)
-* Data type: OHLCV (Open, High, Low, Close, Volume)
+Dataset scale:
 
-Due to the high resolution and extended time horizon, the dataset reaches **millions of observations per asset**, resulting in large storage requirements.
-
----
-
-## Feature Engineering
-
-The project includes systematic feature construction to capture market dynamics:
-
-* Returns and log-returns
-* Rolling statistics (mean, standard deviation)
-* Volatility indicators
-* Window-based transformations
-
-These features are designed to enhance temporal pattern recognition and improve model performance.
-
----
-
-## Modeling Approach
-
-The core modeling framework is based on **deep learning architectures for sequential data**, including:
-
-* LSTM (Long Short-Term Memory) networks
-* Sliding window sequence generation
-* Supervised learning formulation of time-series forecasting
-
-The models are trained on historical sequences to predict future price movements.
+* ~500K rows per coin (15m)
+* Millions of rows (1m)
 
 ---
 
 ## Project Structure
 
-```
+```text
 crypto_project/
 │
 ├── crypto_api_lstm_puhti_Ahmadinia.ipynb   # Main notebook
-├── data/                                   # Raw and processed datasets (excluded from GitHub)
+├── data/                                   # Raw data (excluded)
 ├── models/                                 # Trained models (excluded)
 ├── checkpoints/                            # Training checkpoints (excluded)
-├── results/                                # Outputs and predictions (excluded)
-├── logs/                                   # Execution logs (excluded)
+├── results/                                # Outputs (excluded)
+├── logs/                                   # Logs (excluded)
 └── .gitignore
 ```
 
@@ -63,40 +93,40 @@ crypto_project/
 
 ## Computational Environment
 
-This project was developed and executed on **CSC Puhti (HPC environment)**, enabling efficient handling of large-scale time-series data and extended training procedures.
+* Platform: **CSC Puhti (HPC)**
+* Parallel processing for large datasets
+* Long-running training jobs (~hours)
 
 ---
 
 ## Reproducibility
 
-To reproduce the results:
+To reproduce:
 
-1. Configure API access for Binance data
-2. Adjust parameters such as:
+1. Set parameters:
 
    * `START_DATE`
    * `INTERVAL`
-   * selected trading pairs
-3. Execute the notebook sequentially
-
-Note: Raw datasets and model artifacts are excluded from the repository due to size constraints.
+   * `SYMBOLS`
+2. Run notebook sequentially
+3. Data will be downloaded automatically via API
 
 ---
 
 ## Limitations
 
-* High-frequency data significantly increases computational cost
-* Long training times (several hours for full datasets)
-* Market noise and non-stationarity remain inherent challenges
+* High computational cost for 1-minute data
+* Long data preparation time (~hours)
+* Market volatility and noise
 
 ---
 
 ## Future Work
 
-* Integration of Transformer-based architectures
-* Hyperparameter optimization
-* Multi-asset correlation modeling
-* Deployment for real-time prediction
+* Transformer models (attention-based)
+* Hyperparameter tuning
+* Multi-asset modeling
+* Real-time prediction system
 
 ---
 
@@ -104,10 +134,10 @@ Note: Raw datasets and model artifacts are excluded from the repository due to s
 
 **Hamed Ahmadinia**
 
-Specialization: Data Analytics & Machine Learning
+Data Analytics & Machine Learning
 
 ---
 
-## License
+## Notes
 
-This project is intended for academic and research purposes.
+Raw datasets, models, and intermediate outputs are excluded from GitHub due to size and reproducibility considerations.
