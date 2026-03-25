@@ -1,0 +1,15 @@
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+
+data/raw/
+checkpoints/
+models/
+results/
+
+*.parquet
+*.pt
+*.pth
+*.pkl
+*.joblib
+logs/
